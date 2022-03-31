@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EventsRepository } from './events.repository';
 import { Event } from './entities/event.entity';
-import { Ticket } from './entities/ticket.entity';
 
 describe('EventsRepository', () => {
   let repository: EventsRepository;
@@ -21,7 +20,6 @@ describe('EventsRepository', () => {
       title: 'Banane',
       city: 'Nürnberg',
       date: new Date(),
-      tickets: [],
     };
   });
 
@@ -52,39 +50,5 @@ describe('EventsRepository', () => {
     repository.delete(DEFAULT_EVENT_ID);
 
     expect(repository.findAll().length).toBe(0);
-  });
-
-  it('should add tickets', () => {
-    repository.save(event);
-
-    expect(repository.findById(DEFAULT_EVENT_ID).tickets.length).toBe(0);
-
-    repository.addTicket(DEFAULT_EVENT_ID, {
-      barcode: '123',
-      firstName: 'Max',
-      lastName: 'Mustermann',
-    });
-
-    expect(repository.findById(DEFAULT_EVENT_ID).tickets.length).toBe(1);
-  });
-
-  it('should remove tickets', () => {
-    repository.save(event);
-
-    expect(repository.findById(DEFAULT_EVENT_ID).tickets.length).toBe(0);
-
-    const ticket: Ticket = {
-      barcode: '123',
-      firstName: 'Max',
-      lastName: 'Mustermann',
-    };
-
-    repository.addTicket(DEFAULT_EVENT_ID, ticket);
-
-    expect(repository.findById(DEFAULT_EVENT_ID).tickets.length).toBe(1);
-
-    repository.removeTicket(DEFAULT_EVENT_ID, ticket);
-
-    expect(repository.findById(DEFAULT_EVENT_ID).tickets.length).toBe(0);
   });
 });
