@@ -1,26 +1,42 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
+import { TicketsRepository } from './tickets.repository';
+import { Ticket } from './entities/ticket.entity';
+import { v4 as uuidV4 } from 'uuid';
 
 @Injectable()
 export class TicketsService {
-  create(createTicketDto: CreateTicketDto) {
-    return 'This action adds a new ticket';
+  constructor(private readonly ticketsRepository: TicketsRepository) {}
+
+  create(createTicketDto: CreateTicketDto): Ticket {
+    const newTicket: Ticket = {
+      ...createTicketDto,
+      id: uuidV4(),
+    };
+    this.ticketsRepository.save(newTicket);
+    return newTicket;
   }
 
   findAll() {
-    return `This action returns all tickets`;
+    return this.ticketsRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} ticket`;
+  findOne(id: string) {
+    return this.ticketsRepository.findById(id);
   }
 
-  update(id: number, updateTicketDto: UpdateTicketDto) {
-    return `This action updates a #${id} ticket`;
+  update(id: string, updateTicketDto: UpdateTicketDto) {
+    const ticket = this.ticketsRepository.findById(id);
+    const updatedTicket: Ticket = {
+      ...ticket,
+      ...updateTicketDto,
+    };
+    this.ticketsRepository.save(updatedTicket);
+    return updatedTicket;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} ticket`;
+  remove(id: string) {
+    return this.ticketsRepository.delete(id);
   }
 }
