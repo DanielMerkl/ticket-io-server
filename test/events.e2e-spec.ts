@@ -29,20 +29,20 @@ describe('EventsController (e2e)', () => {
       date: new Date(),
       city: 'Nürnberg',
     };
-    const responseOfCreate = await request(app.getHttpServer())
+    const createEventResponse = await request(app.getHttpServer())
       .post('/events')
       .send(createEventDto)
       .expect(201);
 
-    const createdEvent: Event = responseOfCreate.body;
+    const createdEvent: Event = createEventResponse.body;
     expect(createdEvent.id).toBeDefined();
 
     // READ
-    const responseOfRead = await request(app.getHttpServer())
+    const getEventsResponse = await request(app.getHttpServer())
       .get('/events')
       .expect(200);
 
-    const events: Event[] = responseOfRead.body;
+    const events: Event[] = getEventsResponse.body;
 
     expect(events.length).toBe(1);
 
@@ -50,12 +50,12 @@ describe('EventsController (e2e)', () => {
     const updateEventDto: UpdateEventDto = {
       title: 'Apfel',
     };
-    const responseOfUpdate = await request(app.getHttpServer())
+    const updateEventResponse = await request(app.getHttpServer())
       .patch(`/events/${createdEvent.id}`)
       .send(updateEventDto)
       .expect(200);
 
-    const updatedEvent: Event = responseOfUpdate.body;
+    const updatedEvent: Event = updateEventResponse.body;
     expect(updatedEvent.title).toBe(updateEventDto.title);
 
     // DELETE
