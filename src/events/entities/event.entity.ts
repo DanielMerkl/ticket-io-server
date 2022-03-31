@@ -1,7 +1,7 @@
 import { Ticket } from './ticket.entity';
 
 export class Event {
-  id: number;
+  id: string;
   title: string;
   date: Date;
   city: string;
