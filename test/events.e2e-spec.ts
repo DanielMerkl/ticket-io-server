@@ -43,7 +43,6 @@ describe('EventsController (e2e)', () => {
       .expect(200);
 
     const events: Event[] = getEventsResponse.body;
-
     expect(events.length).toBe(1);
 
     // UPDATE
