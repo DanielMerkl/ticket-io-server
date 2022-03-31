@@ -7,6 +7,7 @@ describe('EventsRepository', () => {
   let repository: EventsRepository;
 
   let event: Event;
+  const DEFAULT_ID = '1';
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -16,7 +17,7 @@ describe('EventsRepository', () => {
     repository = module.get<EventsRepository>(EventsRepository);
 
     event = {
-      id: 1,
+      id: '1',
       title: 'Banane',
       city: 'Nürnberg',
       date: new Date(),
@@ -39,8 +40,8 @@ describe('EventsRepository', () => {
   it('should find events by id', () => {
     repository.save(event);
 
-    expect(repository.findById(123)).toBeUndefined();
-    expect(repository.findById(1)).toBeDefined();
+    expect(repository.findById('123')).toBeUndefined();
+    expect(repository.findById('1')).toBeDefined();
   });
 
   it('should delete events', () => {
@@ -48,7 +49,7 @@ describe('EventsRepository', () => {
 
     expect(repository.findAll().length).toBe(1);
 
-    repository.delete(1);
+    repository.delete('1');
 
     expect(repository.findAll().length).toBe(0);
   });
@@ -56,21 +57,21 @@ describe('EventsRepository', () => {
   it('should add tickets', () => {
     repository.save(event);
 
-    expect(repository.findById(1).tickets.length).toBe(0);
+    expect(repository.findById('1').tickets.length).toBe(0);
 
-    repository.addTicket(1, {
+    repository.addTicket('1', {
       barcode: '123',
       firstName: 'Max',
       lastName: 'Mustermann',
     });
 
-    expect(repository.findById(1).tickets.length).toBe(1);
+    expect(repository.findById('1').tickets.length).toBe(1);
   });
 
   it('should remove tickets', () => {
     repository.save(event);
 
-    expect(repository.findById(1).tickets.length).toBe(0);
+    expect(repository.findById('1').tickets.length).toBe(0);
 
     const ticket: Ticket = {
       barcode: '123',
@@ -78,12 +79,12 @@ describe('EventsRepository', () => {
       lastName: 'Mustermann',
     };
 
-    repository.addTicket(1, ticket);
+    repository.addTicket('1', ticket);
 
-    expect(repository.findById(1).tickets.length).toBe(1);
+    expect(repository.findById('1').tickets.length).toBe(1);
 
-    repository.removeTicket(1, ticket);
+    repository.removeTicket('1', ticket);
 
-    expect(repository.findById(1).tickets.length).toBe(0);
+    expect(repository.findById('1').tickets.length).toBe(0);
   });
 });
