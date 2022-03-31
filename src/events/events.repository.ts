@@ -4,13 +4,13 @@ import { Ticket } from './entities/ticket.entity';
 
 @Injectable()
 export class EventsRepository {
-  private events: Map<number, Event> = new Map<number, Event>();
+  private events: Map<string, Event> = new Map<string, Event>();
 
   public findAll(): Event[] {
     return [...this.events.values()];
   }
 
-  public findById(id: number): Event {
+  public findById(id: string): Event {
     return this.events.get(id);
   }
 
@@ -18,17 +18,17 @@ export class EventsRepository {
     this.events.set(event.id, event);
   }
 
-  public delete(id: number): void {
+  public delete(id: string): void {
     this.events.delete(id);
   }
 
-  public addTicket(eventId: number, ticket: Ticket) {
+  public addTicket(eventId: string, ticket: Ticket) {
     const event = this.events.get(eventId);
     event.tickets.push(ticket);
     this.events.set(eventId, event);
   }
 
-  public removeTicket(eventId: number, ticket: Ticket) {
+  public removeTicket(eventId: string, ticket: Ticket) {
     const event = this.events.get(eventId);
     event.tickets = event.tickets.filter((t) => t.barcode !== ticket.barcode);
     this.events.set(eventId, event);
