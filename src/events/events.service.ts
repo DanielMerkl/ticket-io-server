@@ -1,26 +1,42 @@
 import { Injectable } from '@nestjs/common';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { EventsRepository } from './events.repository';
+import { v4 as uuidV4 } from 'uuid';
+import { Event } from './entities/event.entity';
 
 @Injectable()
 export class EventsService {
-  create(createEventDto: CreateEventDto) {
-    return 'This action adds a new event';
+  constructor(private readonly eventsRepository: EventsRepository) {}
+
+  create(createEventDto: CreateEventDto): Event {
+    const newEvent = {
+      ...createEventDto,
+      id: uuidV4(),
+    };
+    this.eventsRepository.save(newEvent);
+    return newEvent;
   }
 
-  findAll() {
-    return `This action returns all events`;
+  findAll(): Event[] {
+    return this.eventsRepository.findAll();
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} event`;
+  findOne(id: string): Event {
+    return this.eventsRepository.findById(id);
   }
 
-  update(id: string, updateEventDto: UpdateEventDto) {
-    return `This action updates a #${id} event`;
+  update(id: string, updateEventDto: UpdateEventDto): Event {
+    const event = this.eventsRepository.findById(id);
+    const updatedEvent = {
+      ...event,
+      ...updateEventDto,
+    };
+    this.eventsRepository.save(updatedEvent);
+    return updatedEvent;
   }
 
   remove(id: string) {
-    return `This action removes a #${id} event`;
+    this.eventsRepository.delete(id);
   }
 }
