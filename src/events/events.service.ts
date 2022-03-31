@@ -12,15 +12,15 @@ export class EventsService {
     return `This action returns all events`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} event`;
   }
 
-  update(id: number, updateEventDto: UpdateEventDto) {
+  update(id: string, updateEventDto: UpdateEventDto) {
     return `This action updates a #${id} event`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} event`;
   }
 }
