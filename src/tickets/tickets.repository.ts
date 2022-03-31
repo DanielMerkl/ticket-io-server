@@ -14,7 +14,7 @@ export class TicketsRepository {
   }
 
   public save(ticket: Ticket): void {
-    this.tickets.set(ticket.eventId + ticket.barcode, ticket);
+    this.tickets.set(ticket.id, ticket);
   }
 
   public delete(id: string): void {
