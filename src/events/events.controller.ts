@@ -10,10 +10,14 @@ import {
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { TicketsService } from '../tickets/tickets.service';
 
 @Controller('events')
 export class EventsController {
-  constructor(private readonly eventsService: EventsService) {}
+  constructor(
+    private readonly eventsService: EventsService,
+    private readonly ticketsService: TicketsService,
+  ) {}
 
   @Post()
   create(@Body() createEventDto: CreateEventDto) {
@@ -38,5 +42,10 @@ export class EventsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.eventsService.remove(id);
+  }
+
+  @Get(':id/tickets')
+  findTickets(@Param('id') id: string) {
+    return this.ticketsService.findAllByEventId(id);
   }
 }

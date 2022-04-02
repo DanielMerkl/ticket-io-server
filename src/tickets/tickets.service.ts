@@ -39,4 +39,8 @@ export class TicketsService {
   remove(id: string) {
     return this.ticketsRepository.delete(id);
   }
+
+  findAllByEventId(eventId: string) {
+    return this.ticketsRepository.findAllByEventId(eventId);
+  }
 }

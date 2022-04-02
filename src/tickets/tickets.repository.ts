@@ -20,4 +20,8 @@ export class TicketsRepository {
   public delete(id: string): void {
     this.tickets.delete(id);
   }
+
+  findAllByEventId(eventId: string) {
+    return [...this.tickets.values()].filter((t) => t.eventId === eventId);
+  }
 }
