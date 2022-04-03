@@ -94,11 +94,11 @@ describe('EventsController (e2e)', () => {
       lastName: 'Muster',
     };
     await request(app.getHttpServer())
-      .post(`/events/${createdEvent.id}/tickets`)
+      .post(`/tickets`)
       .send(firstTicketDto)
       .expect(201);
     await request(app.getHttpServer())
-      .post(`/events/${createdEvent.id}/tickets`)
+      .post(`/tickets`)
       .send(secondTicketDto)
       .expect(201);
 
