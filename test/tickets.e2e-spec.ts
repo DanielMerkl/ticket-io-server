@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { CreateTicketDto } from '../src/tickets/dto/create-ticket.dto';
@@ -15,6 +15,7 @@ describe('TicketsController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.useGlobalPipes(new ValidationPipe());
     await app.init();
   });
 
@@ -64,5 +65,31 @@ describe('TicketsController (e2e)', () => {
       .expect(200);
 
     await request(app.getHttpServer()).get('/tickets').expect(200).expect([]);
+  });
+
+  it('should throw error for non-alphanumeric barcodes', () => {
+    const createTicketDto: CreateTicketDto = {
+      eventId: '1',
+      barcode: '1a@',
+      firstName: 'Max',
+      lastName: 'Mustermann',
+    };
+    return request(app.getHttpServer())
+      .post('/tickets')
+      .send(createTicketDto)
+      .expect(400);
+  });
+
+  it('should throw error for barcodes with length greater than 8', () => {
+    const createTicketDto: CreateTicketDto = {
+      eventId: '1',
+      barcode: '123456789',
+      firstName: 'Max',
+      lastName: 'Mustermann',
+    };
+    return request(app.getHttpServer())
+      .post('/tickets')
+      .send(createTicketDto)
+      .expect(400);
   });
 });
